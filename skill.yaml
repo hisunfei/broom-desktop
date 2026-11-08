@@ -1,0 +1,36 @@
+name: broom-desktop
+version: 1.0.0
+description: |
+  macOS 菜单栏磁盘监控工具，实时监控磁盘空间，配合 broom skill 使用。
+  功能：饼图/文字/进度条显示、空间不足提醒、开机自启动、一键获取 broom 清理命令。
+author: hisunfei
+tags:
+  - macos
+  - disk
+  - monitor
+  - broom
+  - utility
+requirements:
+  - macOS 10.15+
+  - Python 3.8+
+  - pyobjc-framework-Cocoa
+install: |
+  1. 克隆仓库：git clone https://github.com/hisunfei/broom-desktop.git
+  2. 进入目录：cd broom-desktop
+  3. 安装依赖：pip3 install pyobjc-framework-Cocoa
+  4. 启动：python3 disk_monitor.py
+  5. （可选）设置开机启动：点击菜单栏图标 → 开机启动 → 启用
+usage: |
+  启动后，菜单栏会显示磁盘空间（饼图/文字/进度条）。
+  
+  点击菜单栏图标可以：
+  - 查看 Broom 清理说明（获取 broom skill 安装命令）
+  - 设置空间不足提醒阈值（1/3/5/10 GB）
+  - 切换开机启动
+  - 切换显示风格（饼图/纯文字/进度条）
+  - 退出
+  
+  配合 broom skill 使用效果更佳：
+  https://github.com/hisunfei/broom
+related_skills:
+  - broom
