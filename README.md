@@ -1,6 +1,6 @@
-# 🧹 broom-桌面
+# 🧹 broom-widget
 
-macOS 菜单栏磁盘监控工具，配合 [broom](https://github.com/hisunfei/broom) skill 使用，实时监控磁盘空间，一键获取清理命令。
+macOS 菜单栏磁盘监控小挂件，配合 [broom](https://github.com/hisunfei/broom) skill 使用，实时监控磁盘空间，一键获取清理命令。
 
 ---
 
@@ -33,8 +33,8 @@ macOS 菜单栏磁盘监控工具，配合 [broom](https://github.com/hisunfei/b
 
 ```bash
 # 克隆项目
-git clone https://github.com/hisunfei/broom-desktop.git
-cd broom-desktop
+git clone https://github.com/hisunfei/broom-widget.git
+cd broom-widget
 
 # 安装依赖
 pip3 install pyobjc-framework-Cocoa
@@ -82,7 +82,7 @@ Broom 清理              ← 查看 broom skill 安装和使用说明
 
 ## 🧹 broom skill
 
-broom-桌面 配合 [broom](https://github.com/hisunfei/broom) AI 磁盘清理 skill 使用。
+broom-widget 配合 [broom](https://github.com/hisunfei/broom) AI 磁盘清理 skill 使用。
 
 ### 安装 broom
 
@@ -107,7 +107,7 @@ broom-桌面 配合 [broom](https://github.com/hisunfei/broom) AI 磁盘清理 s
 
 ## ⚙️ 配置
 
-配置文件位置：`~/Library/Application Support/broom-desktop/config.json`
+配置文件位置：`~/Library/Application Support/broom-widget/config.json`
 
 ```json
 {
@@ -144,9 +144,9 @@ MIT License
 
 ---
 
-# 🧹 broom-desktop (English)
+# 🧹 broom-widget (English)
 
-A macOS menu bar disk monitor that works with the [broom](https://github.com/hisunfei/broom) AI skill for one-click disk cleanup commands.
+A macOS menu bar disk monitor widget that works with the [broom](https://github.com/hisunfei/broom) AI skill for one-click disk cleanup commands.
 
 ## Features
 
@@ -160,15 +160,15 @@ A macOS menu bar disk monitor that works with the [broom](https://github.com/his
 ## Quick Start
 
 ```bash
-git clone https://github.com/hisunfei/broom-desktop.git
-cd broom-desktop
+git clone https://github.com/hisunfei/broom-widget.git
+cd broom-widget
 pip3 install pyobjc-framework-Cocoa
 python3 disk_monitor.py
 ```
 
 ## broom skill
 
-broom-desktop works with the [broom](https://github.com/hisunfei/broom) AI disk cleanup skill.
+broom-widget works with the [broom](https://github.com/hisunfei/broom) AI disk cleanup skill.
 
 ### Install broom
 

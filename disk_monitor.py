@@ -21,7 +21,7 @@ from AppKit import (
 )
 
 # ─── 配置管理 ───────────────────────────────────────────
-CONFIG_DIR = Path.home() / "Library" / "Application Support" / "broom-desktop"
+CONFIG_DIR = Path.home() / "Library" / "Application Support" / "broom-widget"
 CONFIG_FILE = CONFIG_DIR / "config.json"
 
 DEFAULT_CONFIG = {
@@ -52,7 +52,7 @@ def save_config(config):
 
 # ─── LaunchAgent 管理 ───────────────────────────────────
 LAUNCHAGENT_DIR = Path.home() / "Library" / "LaunchAgents"
-LAUNCHAGENT_FILE = LAUNCHAGENT_DIR / "com.broom.desktop.plist"
+LAUNCHAGENT_FILE = LAUNCHAGENT_DIR / "com.broom.widget.plist"
 
 def get_python_path():
     """获取 Python 解释器路径"""
@@ -75,7 +75,7 @@ def create_launchagent():
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>com.broom.desktop</string>
+    <string>com.broom.widget</string>
     <key>ProgramArguments</key>
     <array>
         <string>{python_path}</string>

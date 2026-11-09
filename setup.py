@@ -9,9 +9,9 @@ DATA_FILES = []
 OPTIONS = {
     'argv_emulation': False,
     'plist': {
-        'CFBundleName': 'Broom Desktop',
-        'CFBundleDisplayName': 'Broom Desktop',
-        'CFBundleIdentifier': 'com.hisunfei.broom-desktop',
+        'CFBundleName': 'Broom Widget',
+        'CFBundleDisplayName': 'Broom Widget',
+        'CFBundleIdentifier': 'com.hisunfei.broom-widget',
         'CFBundleVersion': '1.0.0',
         'CFBundleShortVersionString': '1.0.0',
         'CFBundlePackageType': 'APPL',

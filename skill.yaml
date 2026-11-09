@@ -1,4 +1,4 @@
-name: broom-desktop
+name: broom-widget
 version: 1.0.0
 description: |
   macOS 菜单栏磁盘监控工具，实时监控磁盘空间，配合 broom skill 使用。

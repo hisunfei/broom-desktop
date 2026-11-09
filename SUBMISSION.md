@@ -4,7 +4,7 @@
 
 | 字段 | 内容 |
 |------|------|
-| **Skill 名称** | broom-桌面 |
+| **Skill 名称** | broom-widget |
 | **版本** | 1.0.0 |
 | **分类** | 系统工具 / 磁盘管理 |
 | **平台** | macOS |
@@ -16,7 +16,7 @@ macOS 菜单栏磁盘监控工具，实时监控磁盘空间，一键获取 AI �
 
 ## 详细描述
 
-broom-桌面 是一个轻量级 macOS 菜单栏应用，实时显示磁盘使用情况，配合 broom AI skill 实现智能磁盘清理。
+broom-widget 是一个轻量级 macOS 菜单栏应用，实时显示磁盘使用情况，配合 broom AI skill 实现智能磁盘清理。
 
 ### 核心功能
 
@@ -40,8 +40,8 @@ broom-桌面 是一个轻量级 macOS 菜单栏应用，实时显示磁盘使用
 下载 Broom Desktop.app，拖入 /Applications 即可
 
 # 方式 2: 从源码运行
-git clone https://github.com/hisunfei/broom-desktop.git
-cd broom-desktop
+git clone https://github.com/hisunfei/broom-widget.git
+cd broom-widget
 pip3 install pyobjc-framework-Cocoa
 python3 disk_monitor.py
 ```
@@ -56,7 +56,7 @@ python3 disk_monitor.py
 
 - **broom** — AI 磁盘清理 skill
   - GitHub: https://github.com/hisunfei/broom
-  - 说明: broom-桌面 获取清理命令，broom skill 执行实际清理
+  - 说明: broom-widget 获取清理命令，broom skill 执行实际清理
 
 ## 截图
 
@@ -68,8 +68,8 @@ python3 disk_monitor.py
 ## 提交文件清单
 
 ```
-broom-desktop/
-├── Broom Desktop.app          # 编译好的应用（26MB）
+broom-widget/
+├── Broom Widget.app             # 编译好的应用（26MB）
 ├── disk_monitor.py            # 源码
 ├── start.sh                   # 启动脚本
 ├── stop.sh                    # 停止脚本
