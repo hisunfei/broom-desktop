@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 """
-broom-桌面 - macOS 菜单栏磁盘监控工具
-配合 broom skill 使用，一键清理磁盘空间
+broom-widget - macOS 菜单栏磁盘监控小挂件
+配合 broom skill 使用，实时监控磁盘空间，一键获取清理命令
 """
 
 import objc
 import os
+import sys
 import json
+import time
 import subprocess
+import fcntl
 from pathlib import Path
 from Foundation import NSHomeDirectory, NSMakeRect, NSMakeSize, NSPoint
 from AppKit import (
@@ -85,8 +88,10 @@ def create_launchagent():
     <true/>
     <key>KeepAlive</key>
     <false/>
-    <key>LaunchEvents</key>
-    <dict/>
+    <key>ProcessType</key>
+    <string>Background</string>
+    <key>LimitLoadToSessionType</key>
+    <string>Aqua</string>
 </dict>
 </plist>
 '''
@@ -94,17 +99,31 @@ def create_launchagent():
     with open(LAUNCHAGENT_FILE, "w") as f:
         f.write(plist_content)
     
-    # 加载 LaunchAgent
-    subprocess.run(["launchctl", "load", str(LAUNCHAGENT_FILE)], 
-                   capture_output=True)
+    # 使用现代 macOS 的 bootstrap 方式加载
+    uid = os.getuid()
+    result = subprocess.run(
+        ["launchctl", "bootstrap", f"gui/{uid}", str(LAUNCHAGENT_FILE)],
+        capture_output=True, text=True
+    )
+    if result.returncode != 0:
+        # fallback 到旧方式
+        subprocess.run(["launchctl", "load", str(LAUNCHAGENT_FILE)],
+                       capture_output=True, text=True)
     print(f"已创建 LaunchAgent: {LAUNCHAGENT_FILE}")
 
 def remove_launchagent():
     """删除 LaunchAgent plist 文件"""
     if LAUNCHAGENT_FILE.exists():
-        # 卸载 LaunchAgent
-        subprocess.run(["launchctl", "unload", str(LAUNCHAGENT_FILE)], 
-                       capture_output=True)
+        uid = os.getuid()
+        # 使用现代 macOS 的 bootout 方式卸载
+        result = subprocess.run(
+            ["launchctl", "bootout", f"gui/{uid}/com.broom.widget"],
+            capture_output=True, text=True
+        )
+        if result.returncode != 0:
+            # fallback 到旧方式
+            subprocess.run(["launchctl", "unload", str(LAUNCHAGENT_FILE)],
+                           capture_output=True, text=True)
         LAUNCHAGENT_FILE.unlink()
         print(f"已删除 LaunchAgent: {LAUNCHAGENT_FILE}")
 
@@ -388,7 +407,7 @@ class DiskMonitor(NSObject):
             btn.setTitle_(f" {fmt_size(freeGB)}")
 
         elif self.currentStyle == STYLE_TEXT:
-            btn.setTitle_(f"{fmt_size(freeGB)} 可用")
+            btn.setTitle_(fmt_size(freeGB))
 
         elif self.currentStyle == STYLE_BAR:
             btn.setImage_(draw_bar_image(pct, width=24, height=12))
@@ -403,7 +422,7 @@ class DiskMonitor(NSObject):
         # 清除旧详情
         while menu.numberOfItems() > 0:
             t = menu.itemAtIndex_(0).title()
-            if t in ("Broom 清理", "空间不足提醒", "显示风格", "退出", ""):
+            if t in ("Broom 清理", "空间不足提醒", "开机启动", "显示风格", "退出", ""):
                 break
             menu.removeItemAtIndex_(0)
 
@@ -505,18 +524,50 @@ class DiskMonitor(NSObject):
         NSApplication.sharedApplication().terminate_(self)
 
 
+# ─── 单实例锁 ────────────────────────────────────────────
+LOCK_FILE = Path("/tmp/broom-widget.lock")
+
+def acquire_lock():
+    """获取单实例锁，防止重复启动"""
+    try:
+        LOCK_FILE.parent.mkdir(parents=True, exist_ok=True)
+        lock_fd = open(LOCK_FILE, "w")
+        fcntl.flock(lock_fd.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        lock_fd.write(str(os.getpid()))
+        lock_fd.flush()
+        return lock_fd
+    except (IOError, OSError):
+        print("broom-widget 已在运行中，退出")
+        sys.exit(0)
+
+def release_lock(lock_fd):
+    """释放单实例锁"""
+    try:
+        fcntl.flock(lock_fd.fileno(), fcntl.LOCK_UN)
+        lock_fd.close()
+        LOCK_FILE.unlink(missing_ok=True)
+    except:
+        pass
+
+
 # ─── 入口 ────────────────────────────────────────────────
 def main():
+    # 单实例检查
+    lock_fd = acquire_lock()
+
     app = NSApplication.sharedApplication()
     app.setActivationPolicy_(NSApplicationActivationPolicyAccessory)
     monitor = DiskMonitor.alloc().init()
 
-    print("broom-桌面 已启动")
+    print("broom-widget 已启动")
+    print(f"  PID: {os.getpid()}")
     print("  菜单栏显示磁盘空间")
-    print("  点击「了解 broom 清理工具」查看使用说明")
     print("  按 Ctrl+C 退出")
 
-    app.run()
+    try:
+        app.run()
+    finally:
+        release_lock(lock_fd)
 
 
 if __name__ == "__main__":
